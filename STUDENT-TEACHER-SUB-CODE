@@ -1,0 +1,31 @@
+% Facts
+% student(StudentName, SubjectCode).
+student('Alice', 'CS101').
+student('Bob', 'CS102').
+student('Charlie', 'CS101').
+student('Diana', 'CS103').
+
+% teacher(TeacherName, SubjectCode).
+teacher('Prof. Smith', 'CS101').
+teacher('Prof. Johnson', 'CS102').
+teacher('Prof. Brown', 'CS103').
+
+% Rule to find which teacher teaches which student
+teaches(TeacherName, StudentName) :-
+    teacher(TeacherName, SubjectCode),
+    student(StudentName, SubjectCode).
+
+% Rule to find all students taught by a specific teacher
+students_of_teacher(TeacherName, Students) :-
+    findall(StudentName, teaches(TeacherName, StudentName), Students).
+
+% Rule to find all teachers of a specific student
+teachers_of_student(StudentName, Teachers) :-
+    findall(TeacherName, teaches(TeacherName, StudentName), Teachers).
+
+% Rule to print all students and their corresponding teachers
+print_all_student_teacher_pairs :-
+    teaches(TeacherName, StudentName),
+    format('~w teaches ~w.~n', [TeacherName, StudentName]),
+    fail.
+print_all_student_teacher_pairs.
