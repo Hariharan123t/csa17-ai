@@ -1,0 +1,35 @@
+% Facts
+% planet(Name, DistanceFromSunInMillionKm, DiameterInKm, NumberOfMoons).
+
+planet(mercury, 57.9, 4879, 0).
+planet(venus, 108.2, 12104, 0).
+planet(earth, 149.6, 12742, 1).
+planet(mars, 227.9, 6779, 2).
+planet(jupiter, 778.3, 139820, 79).
+planet(saturn, 1427, 116460, 83).
+planet(uranus, 2871, 50724, 27).
+planet(neptune, 4495, 49244, 14).
+
+% Rules
+% Find the diameter of a planet by name.
+diameter(Name, Diameter) :-
+    planet(Name, _, Diameter, _).
+
+% Find the number of moons of a planet by name.
+moons(Name, NumberOfMoons) :-
+    planet(Name, _, _, NumberOfMoons).
+
+% Find the distance of a planet from the sun by name.
+distance_from_sun(Name, Distance) :-
+    planet(Name, Distance, _, _).
+
+% Find all planets within a certain distance from the sun.
+planets_within_distance(MaxDistance, Planets) :-
+    findall(Name, (planet(Name, Distance, _, _), Distance =< MaxDistance), Planets).
+
+% Print all planets and their properties.
+print_all_planets :-
+    planet(Name, Distance, Diameter, Moons),
+    format('~w: Distance from Sun = ~2f million km, Diameter = ~d km, Moons = ~d~n', [Name, Distance, Diameter, Moons]),
+    fail.
+print_all_planets.
