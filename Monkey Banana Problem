@@ -1,0 +1,36 @@
+% Define the initial state and goal state
+initial_state(state(at_door, on_floor, at_window, has_not)).
+goal_state(state(_, _, _, has)).
+
+% Define actions
+% move(MonkeyLocation1, MonkeyLocation2)
+move(state(MonkeyLocation1, on_floor, BoxLocation, HasBanana), state(MonkeyLocation2, on_floor, BoxLocation, HasBanana)) :-
+    MonkeyLocation1 \= MonkeyLocation2,
+    MonkeyLocation2 \= on_box.
+
+% push(BoxLocation1, BoxLocation2)
+push(state(BoxLocation1, on_floor, BoxLocation1, HasBanana), state(BoxLocation2, on_floor, BoxLocation2, HasBanana)) :-
+    BoxLocation1 \= BoxLocation2.
+
+% climb_up
+climb_up(state(MonkeyLocation, on_floor, MonkeyLocation, HasBanana), state(MonkeyLocation, on_box, MonkeyLocation, HasBanana)).
+
+% climb_down
+climb_down(state(MonkeyLocation, on_box, MonkeyLocation, HasBanana), state(MonkeyLocation, on_floor, MonkeyLocation, HasBanana)).
+
+% grab_banana
+grab_banana(state(at_banana, on_box, at_banana, has_not), state(at_banana, on_box, at_banana, has)).
+
+% Solve the problem
+solve_problem(State, []) :- goal_state(State).
+solve_problem(State, [Action|Actions]) :-
+    move(State, NextState), Action = move(State, NextState), solve_problem(NextState, Actions);
+    push(State, NextState), Action = push(State, NextState), solve_problem(NextState, Actions);
+    climb_up(State, NextState), Action = climb_up(State, NextState), solve_problem(NextState, Actions);
+    climb_down(State, NextState), Action = climb_down(State, NextState), solve_problem(NextState, Actions);
+    grab_banana(State, NextState), Action = grab_banana(State, NextState), solve_problem(NextState, Actions).
+
+% Query to find the solution
+find_solution(Actions) :-
+    initial_state(InitialState),
+    solve_problem(InitialState, Actions).
