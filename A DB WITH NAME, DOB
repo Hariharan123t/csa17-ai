@@ -1,0 +1,16 @@
+% Facts
+dob('Alice', date(1990, 5, 14)).
+dob('Bob', date(1985, 3, 22)).
+dob('Charlie', date(1992, 11, 9)).
+dob('Diana', date(2000, 1, 3)).
+
+% Rule to find date of birth by name
+find_dob(Name, Date) :-
+    dob(Name, Date).
+
+% Rule to print all entries
+print_all_dobs :-
+    dob(Name, Date),
+    format('~w was born on ~d-~d-~d.~n', [Name, Date.year, Date.month, Date.day]),
+    fail.
+print_all_dobs.
