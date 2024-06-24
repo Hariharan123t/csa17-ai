@@ -1,0 +1,74 @@
+% Facts
+% parent(Parent, Child).
+parent(john, mary).
+parent(john, james).
+parent(susan, mary).
+parent(susan, james).
+parent(mary, anna).
+parent(mary, tom).
+parent(paul, anna).
+parent(paul, tom).
+parent(james, sam).
+parent(linda, sam).
+
+% male(Name).
+male(john).
+male(james).
+male(paul).
+male(tom).
+male(sam).
+
+% female(Name).
+female(susan).
+female(mary).
+female(linda).
+female(anna).
+
+% Rules
+% child(Child, Parent).
+child(Child, Parent) :-
+    parent(Parent, Child).
+
+% sibling(Person1, Person2).
+sibling(Person1, Person2) :-
+    parent(Parent, Person1),
+    parent(Parent, Person2),
+    Person1 \= Person2.
+
+% brother(Brother, Sibling).
+brother(Brother, Sibling) :-
+    sibling(Brother, Sibling),
+    male(Brother).
+
+% sister(Sister, Sibling).
+sister(Sister, Sibling) :-
+    sibling(Sister, Sibling),
+    female(Sister).
+
+% grandparent(Grandparent, Grandchild).
+grandparent(Grandparent, Grandchild) :-
+    parent(Grandparent, Parent),
+    parent(Parent, Grandchild).
+
+% grandchild(Grandchild, Grandparent).
+grandchild(Grandchild, Grandparent) :-
+    grandparent(Grandparent, Grandchild).
+
+% uncle(Uncle, NieceOrNephew).
+uncle(Uncle, NieceOrNephew) :-
+    brother(Uncle, Parent),
+    parent(Parent, NieceOrNephew).
+
+% aunt(Aunt, NieceOrNephew).
+aunt(Aunt, NieceOrNephew) :-
+    sister(Aunt, Parent),
+    parent(Parent, NieceOrNephew).
+
+% cousin(Cousin1, Cousin2).
+cousin(Cousin1, Cousin2) :-
+    parent(Parent1, Cousin1),
+    parent(Parent2, Cousin2),
+    sibling(Parent1, Parent2).
+
+% Query example: Who are the grandparents of Sam?
+% ?- grandparent(Grandparent, sam).
