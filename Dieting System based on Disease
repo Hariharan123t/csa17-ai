@@ -1,0 +1,19 @@
+% Facts
+% diet(Disease, DietRecommendations).
+diet(diabetes, 'Low sugar, high fiber, and balanced carbohydrate diet.').
+diet(hypertension, 'Low salt, low fat, high potassium diet.').
+diet(obesity, 'Low calorie, balanced nutrition, high fiber diet.').
+diet(anemia, 'Iron-rich foods, vitamin C to enhance iron absorption.').
+diet(gout, 'Low purine diet, avoid red meat and seafood.').
+diet(celiac_disease, 'Gluten-free diet.').
+diet(kidney_disease, 'Low sodium, low potassium, low phosphorus diet.').
+
+% Rules
+% suggest_diet(Disease, DietRecommendations).
+suggest_diet(Disease, DietRecommendations) :-
+    diet(Disease, DietRecommendations).
+
+% Helper rule to print the dietary recommendation.
+print_diet(Disease) :-
+    suggest_diet(Disease, DietRecommendations),
+    format('For ~w, the recommended diet is: ~w~n', [Disease, DietRecommendations]).
