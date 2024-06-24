@@ -1,0 +1,12 @@
+% Rule to move N disks from Source to Destination using Auxiliary as auxiliary peg
+hanoi(0, _, _, _) :- !.
+hanoi(N, Source, Destination, Auxiliary) :-
+    N > 0,
+    M is N - 1,
+    hanoi(M, Source, Auxiliary, Destination),
+    format('Move disk from ~w to ~w~n', [Source, Destination]),
+    hanoi(M, Auxiliary, Destination, Source).
+
+% Helper rule to start the process with the number of disks and pegs
+solve_hanoi(N) :-
+    hanoi(N, left, right, center).
