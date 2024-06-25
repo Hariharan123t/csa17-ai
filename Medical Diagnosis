@@ -1,0 +1,31 @@
+% Define symptoms for various diseases
+symptom(john, fever).
+symptom(john, headache).
+symptom(john, runny_nose).
+symptom(anna, cough).
+symptom(anna, sore_throat).
+symptom(anna, fever).
+
+% Define diseases and their symptoms
+disease(cold, [runny_nose, sore_throat, cough]).
+disease(flu, [fever, headache, cough]).
+disease(allergy, [runny_nose, sore_throat]).
+
+% Define rules for diagnosing diseases based on symptoms
+diagnosis(Patient, Disease) :-
+    symptom(Patient, Symptom),
+    disease(Disease, Symptoms),
+    subset(Symptoms, [Symptom|_]).
+
+% Define subset predicate to check if all elements of a list are in another list
+subset([], _).
+subset([H|T], List) :-
+    member(H, List),
+    subset(T, List).
+
+% Example queries
+% 1. What disease does John have?
+% ?- diagnosis(john, Disease).
+
+% 2. What disease does Anna have?
+% ?- diagnosis(anna, Disease).
