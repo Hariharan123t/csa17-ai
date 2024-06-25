@@ -1,0 +1,52 @@
+% Define the graph edges and their corresponding costs
+edge(a, b, 1).
+edge(a, c, 2).
+edge(b, d, 4).
+edge(b, e, 2).
+edge(c, f, 3).
+edge(c, g, 2).
+edge(d, h, 1).
+edge(e, h, 2).
+edge(f, h, 5).
+edge(g, h, 3).
+
+% Define the heuristic values (h values) for each node
+heuristic(a, 6).
+heuristic(b, 4).
+heuristic(c, 4).
+heuristic(d, 2).
+heuristic(e, 2).
+heuristic(f, 3).
+heuristic(g, 2).
+heuristic(h, 0).
+
+% Best First Search algorithm
+best_first_search(Start, Goal, Path, Cost) :-
+    best_first_search([[Start, 0]], Goal, [], Path, Cost).
+
+% Base case: If the current path leads to the goal, return the path and cost
+best_first_search([[Goal, Cost]|_], Goal, Visited, Path, Cost) :-
+    reverse([Goal|Visited], Path).
+
+% Recursive case: Expand the current path
+best_first_search([[CurrentNode, CurrentCost]|RestPaths], Goal, Visited, Path, Cost) :-
+    findall(
+        [NextNode, NewCost],
+        ( edge(CurrentNode, NextNode, StepCost),
+          \+ member(NextNode, Visited),
+          heuristic(NextNode, H),
+          NewCost is CurrentCost + StepCost + H
+        ),
+        NextPaths
+    ),
+    append(RestPaths, NextPaths, AllPaths),
+    sort(2, @=<, AllPaths, SortedPaths),
+    best_first_search(SortedPaths, Goal, [CurrentNode|Visited], Path, Cost).
+
+% Helper predicate to sort the paths by their cost
+sort_paths(Paths, SortedPaths) :-
+    map_list_to_pairs(cost_of_path, Paths, Pairs),
+    keysort(Pairs, SortedPairs),
+    pairs_values(SortedPairs, SortedPaths).
+
+cost_of_path([_, Cost], Cost).
