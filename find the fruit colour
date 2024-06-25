@@ -1,0 +1,13 @@
+% Facts about fruit colors
+fruit_color(apple, red).
+fruit_color(apple, green).
+fruit_color(banana, yellow).
+fruit_color(grape, purple).
+fruit_color(grape, green).
+fruit_color(orange, orange).
+fruit_color(lemon, yellow).
+fruit_color(cherry, red).
+
+% Rule to find the color of a specific fruit
+find_color(Fruit, Color) :-
+    fruit_color(Fruit, Color).
