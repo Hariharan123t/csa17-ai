@@ -1,0 +1,35 @@
+% Define initial state of the problem
+initial_state(state(at_door, on_floor, at_window, has_not)).
+
+% Define goal state of the problem
+goal_state(state(_, _, _, has_banana)).
+
+% Define allowed actions and their effects
+% Action: grab_banana
+action(grab_banana, state(at_window, on_box, at_window, has_not), state(at_window, on_box, at_window, has_banana)).
+
+% Action: climb_box
+action(climb_box, state(at_door, on_floor, at_window, has_not), state(at_door, on_box, at_window, has_not)).
+
+% Action: push_box
+action(push_box, state(at_door, on_floor, at_door, has_not), state(at_door, on_floor, at_window, has_not)).
+
+% Define successor state rule
+% If an action is applicable in a given state, the resulting state is true
+result(A, S, S1) :- action(A, S, S1).
+
+% Define successor state rule for chaining actions
+% Allows for planning by chaining actions until the goal state is achieved
+result(A1, S, S2) :- result(A1, S, S1), result(A2, S1, S2).
+
+% Define solving predicate
+solve(State, Plan) :-
+    goal_state(State),
+    Plan = [].
+
+solve(State, [Action | Rest]) :-
+    result(Action, State, NextState),
+    solve(NextState, Rest).
+
+% Example query to find a solution to the Monkey Banana Problem
+% Usage: solve(initial_state(state(at_door, on_floor, at_door, has_not)), Plan).
