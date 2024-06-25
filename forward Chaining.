@@ -1,0 +1,18 @@
+% Define facts
+bird(tweety).
+bird(polly).
+fish(goldie).
+fly(X) :- bird(X).
+swim(X) :- fish(X).
+
+% Rules for inferring facts
+can_move(X) :-
+    fly(X),
+    swim(X).
+
+% Example queries to trigger forward chaining
+% 1. Query to find all birds
+% ?- bird(X).
+
+% 2. Query to find all creatures that can move
+% ?- can_move(X).
