@@ -1,0 +1,20 @@
+% Define facts
+parent(george, charlotte).
+parent(george, william).
+parent(diana, charlotte).
+parent(diana, william).
+
+% Define rules
+ancestor(X, Y) :-
+    parent(X, Y).
+
+ancestor(X, Y) :-
+    parent(X, Z),
+    ancestor(Z, Y).
+
+% Example queries to trigger backward chaining
+% 1. Query to find if George is an ancestor of Charlotte
+% ?- ancestor(george, charlotte).
+
+% 2. Query to find all ancestors of William
+% ?- ancestor(X, william).
